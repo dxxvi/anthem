@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>me</title>
+  <style type="text/css">
+    #bosend { font-family: sans-serif; color: #666; height: 300px; overflow-y: auto }
+    #msg {
+      width: 98%; height: 200px; border: 1px solid #ccc; border-radius: 3px; font-family: monospace; color: #555
+    }
+  </style>
+</head>
+<body>
+<div id="bosend"></div>
+<textarea id="msg"></textarea>
+<br>
+<button onclick="send()">&gt;</button>
+<script type="text/javascript">
+  function runPeriodically() {
+    fetch('/bo-message', {
+      method: 'GET',
+      cache: 'no-cache'
+    })
+        .then(response => response.json())
+        .then(json => {
+          if (json['message']) {
+            const p = document.createElement('p');
+            p.innerHTML = json['message'];
+            document.getElementById('bosend').appendChild(p)
+          }
+        })
+        .catch(error => console.error(error));
+  }
+
+  function send() {
+    fetch('/me-send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      body: document.getElementById('msg').value
+    })
+        .then(__ => document.getElementById('msg').value = '')
+        .catch(error => console.error(error));
+  }
+
+  setInterval(() => {
+    runPeriodically();
+  }, 8765);
+</script>
+</body>
+</html>
