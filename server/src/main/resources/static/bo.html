@@ -19,8 +19,17 @@
   <textarea id="msg"></textarea>
   <br>
   <button onclick="send()">&gt;</button>
+  <br><br>
+  <label for="sleepPeriod">Sleep period:</label>
+  <input type="text" id="sleepPeriod" size="7">
+  <span class="space"></span>
+  <button onclick="setSleepPeriod()">Set</button>
+  <span class="space"></span>
+  <button onclick="getSleepPeriod()">Get</button>
 </div>
 <script type="text/javascript">
+  let sleepPeriod = 8419;
+
   function runPeriodically() {
     fetch('/need-reload', {
       method: 'GET',
@@ -28,6 +37,7 @@
     })
         .then(response => {
           if (response.ok && response.status === 201) reloadScreenshot();
+          setTimeout(runPeriodically, sleepPeriod)
         })
         .catch(error => console.error(error));
 
@@ -46,6 +56,15 @@
         .catch(error => console.error(error));
   }
 
+  function getSleepPeriod() {
+    document.getElementById('sleepPeriod').value = sleepPeriod;
+  }
+
+  function setSleepPeriod() {
+    sleepPeriod = parseInt(document.getElementById('sleepPeriod').value);
+    getSleepPeriod();
+  }
+
   function reloadScreenshot() {
     document.getElementById('ss').setAttribute('src', '/latest-screen?__=' + new Date().getTime())
   }
@@ -62,9 +81,7 @@
         .catch(error => console.error(error));
   }
 
-  setInterval(() => {
-    runPeriodically();
-  }, 8765);
+  setTimeout(runPeriodically, sleepPeriod);
 </script>
 </body>
 </html>
