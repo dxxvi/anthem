@@ -16,6 +16,11 @@
 </div>
 <div style="float: right; width: 11.8%">
   <div id="mesend"></div>
+  <div>
+    <label for="lc">left</label><input type="radio" id="lc" name="mousebutton" value="leftclick" checked>&nbsp;
+    <label for="rc">right</label><input type="radio" id="rc" name="mousebutton" value="rightclick">&nbsp;
+    <label for="dc">double</label><input type="radio" id="dc" name="mousebutton" value="doubleclick">&nbsp;
+  </div>
   <textarea id="msg"></textarea>
   <br>
   <button onclick="send()">&gt;</button>
@@ -30,30 +35,19 @@
 <script type="text/javascript">
   let sleepPeriod = 8419;
 
-  function runPeriodically() {
-    fetch('/need-reload', {
+  async function runPeriodically() {
+    const response = await fetch('/need-reload', {
       method: 'GET',
       cache: 'no-cache'
-    })
-        .then(response => {
-          if (response.ok && response.status === 201) reloadScreenshot();
-          setTimeout(runPeriodically, sleepPeriod)
-        })
-        .catch(error => console.error(error));
-
-    fetch('/me-message', {
-      method: 'GET',
-      cache: 'no-cache'
-    })
-        .then(response => response.json())
-        .then(json => {
-          if (json['message']) {
-            const p = document.createElement('p');
-            p.innerHTML = json['message'];
-            document.getElementById('mesend').appendChild(p)
-          }
-        })
-        .catch(error => console.error(error));
+    });
+    if (response.ok && response.status === 201) reloadScreenshot();
+    const json = await response.json();
+    if (json['message']) {
+      const p = document.createElement('p');
+      p.innerHTML = json['message'];
+      document.getElementById('mesend').appendChild(p)
+    }
+    setTimeout(runPeriodically, sleepPeriod)
   }
 
   function getSleepPeriod() {
@@ -82,6 +76,24 @@
   }
 
   setTimeout(runPeriodically, sleepPeriod);
+
+  document.getElementById('ss').onclick = function(e) {
+    const img = document.getElementById('ss');
+    const action = Array.from(document.querySelectorAll('input[type="radio"][name="mousebutton"]'))
+        .find(radio => radio.checked)
+        .value;
+    fetch('/add-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: action,
+        x: Math.round(e.pageX / img.clientWidth * 1920),
+        y: Math.round(e.pageY / img.clientHeight * 1080)
+      })
+    })
+  };
 </script>
 </body>
 </html>
