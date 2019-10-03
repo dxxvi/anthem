@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>me</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style type="text/css">
     #bosend { font-family: sans-serif; color: #666; height: 300px; overflow-y: auto }
     #msg {
@@ -12,9 +14,9 @@
 </head>
 <body>
 <div id="bosend"></div>
-<textarea id="msg"></textarea>
+<textarea class="form-control" id="msg"></textarea>
 <br>
-<button onclick="send()">&gt;</button>
+<button class="btn btn-outline-secondary" onclick="send()">&gt;</button>
 <script type="text/javascript">
   function runPeriodically() {
     fetch('/bo-message', {

@@ -2,38 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>bo</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style type="text/css">
     #msg {
       width: 98%; height: 200px; border: 1px solid #ccc; border-radius: 3px; font-family: monospace; color: #555
     }
-    #mesend { font-family: sans-serif; color: #666; height: 300px; overflow-y: auto }
+    #mesend { font-family: sans-serif; color: #666; max-height: 300px; overflow-y: auto }
   </style>
 </head>
 <body style="line-height: 1.44; color: #444; margin: 0">
-<div style="float: left; width: 88%">
+<div style="float: left; width: 85.6%">
   <img id="ss" src="" style="max-width: 99.5%">
 </div>
-<div style="float: right; width: 11.8%">
+<div style="float: right; width: 14.2%">
+  <div class="form-inline">
+    <input type="text" id="width" class="form-control" style="width: 3em; padding-left: .25rem; padding-right: .25rem">
+    <code> x </code>
+    <input type="text" id="height" class="form-control" style="width: 3em; padding-left: .25rem; padding-right: .25rem">
+    &nbsp;
+    <button class="btn btn-outline-secondary" onclick="setDimension()">Set</button>
+    &nbsp;
+    <button class="btn btn-outline-secondary" onclick="getDimension()">Get</button>
+  </div>
   <div id="mesend"></div>
   <div>
-    <label for="lc">left</label><input type="radio" id="lc" name="mousebutton" value="leftclick" checked>&nbsp;
-    <label for="rc">right</label><input type="radio" id="rc" name="mousebutton" value="rightclick">&nbsp;
-    <label for="dc">double</label><input type="radio" id="dc" name="mousebutton" value="doubleclick">&nbsp;
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="mousebutton" id="lc" value="leftclick" checked>
+      <label class="form-check-label" for="lc">left</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="mousebutton" id="rc" value="rightclick">
+      <label class="form-check-label" for="rc">right</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="mousebutton" id="dc" value="doubleclick">
+      <label class="form-check-label" for="dc">double</label>
+    </div>
   </div>
-  <textarea id="msg"></textarea>
+  <textarea class="form-control" id="msg"></textarea>
   <br>
-  <button onclick="send()">&gt;</button>
+  <button class="btn btn-outline-secondary" onclick="send()">&gt;</button>
+  &nbsp;&nbsp;
+  <button class="btn btn-outline-secondary" onclick="typeText()">Type</button>
+  &nbsp;&nbsp;
+  <button class="btn btn-outline-secondary" onclick="typeTextAndEnter()">Enter</button>
+  &nbsp;&nbsp;
+  <button class="btn btn-outline-secondary" onclick="escape()">ESC</button>
   <br><br>
-  <label for="sleepPeriod">Sleep period:</label>
-  <input type="text" id="sleepPeriod" size="7">
-  <span class="space"></span>
-  <button onclick="setSleepPeriod()">Set</button>
-  <span class="space"></span>
-  <button onclick="getSleepPeriod()">Get</button>
+  <div class="form-inline">
+    <label for="sleepPeriod">Sleep</label>
+    &nbsp;
+    <input type="text" id="sleepPeriod" class="form-control" style="width: 3em; padding-left: .25rem; padding-right: .25rem">
+    &nbsp;
+    <button class="btn btn-outline-secondary" onclick="setSleepPeriod()">Set</button>
+    &nbsp;
+    <button class="btn btn-outline-secondary" onclick="getSleepPeriod()">Get</button>
+  </div>
 </div>
 <script type="text/javascript">
   let sleepPeriod = 8419;
+  let width = 1920;
+  let height = 1080;
 
   async function runPeriodically() {
     const response = await fetch('/need-reload', {
@@ -75,6 +106,58 @@
         .catch(error => console.error(error));
   }
 
+  function typeText() {
+    fetch('/add-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: 'type',
+        text: document.getElementById('msg').value
+      })
+    })
+        .then(__ => document.getElementById('msg').value = '')
+        .catch(error => console.error(error))
+  }
+
+  function typeTextAndEnter() {
+    fetch('/add-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: 'typeAndEnter',
+        text: document.getElementById('msg').value
+      })
+    })
+        .then(__ => document.getElementById('msg').value = '')
+        .catch(error => console.error(error))
+  }
+
+  function escape() {
+    fetch('/add-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action: 'ESC' })
+    })
+        .then(__ => document.getElementById('msg').value = '')
+        .catch(error => console.error(error))
+  }
+
+  function getDimension() {
+    document.getElementById('width').value = width;
+    document.getElementById('height').value = height;
+  }
+
+  function setDimension() {
+    width = document.getElementById('width').value;
+    height = document.getElementById('height').value
+  }
+
   setTimeout(runPeriodically, sleepPeriod);
 
   document.getElementById('ss').onclick = function(e) {
@@ -89,8 +172,8 @@
       },
       body: JSON.stringify({
         action: action,
-        x: Math.round(e.pageX / img.clientWidth * 1920),
-        y: Math.round(e.pageY / img.clientHeight * 1080)
+        x: Math.round(e.pageX / img.clientWidth * width),
+        y: Math.round(e.pageY / img.clientHeight * height)
       })
     })
   };
