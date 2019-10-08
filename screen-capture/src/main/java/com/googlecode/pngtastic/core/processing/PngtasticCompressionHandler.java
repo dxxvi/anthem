@@ -20,7 +20,7 @@ import java.util.zip.DeflaterOutputStream;
  */
 public class PngtasticCompressionHandler implements PngCompressionHandler {
     public static final ExecutorService EXECUTOR_SERVICE =
-            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 2);
 
     private static final int[] compressionStrategies =
             { Deflater.DEFAULT_STRATEGY, Deflater.FILTERED, Deflater.HUFFMAN_ONLY };

@@ -19,7 +19,7 @@
 <div style="float: right; width: 14.2%">
   <div class="form-inline">
     <input type="text" id="width" class="form-control" style="width: 3em; padding-left: .25rem; padding-right: .25rem">
-    <code> x </code>
+    &nbsp;<code>x</code>&nbsp;
     <input type="text" id="height" class="form-control" style="width: 3em; padding-left: .25rem; padding-right: .25rem">
     &nbsp;
     <button class="btn btn-outline-secondary" onclick="setDimension()">Set</button>
@@ -63,6 +63,11 @@
     <button class="btn btn-outline-secondary" onclick="setSleepPeriod()">Set</button>
     &nbsp;
     <button class="btn btn-outline-secondary" onclick="getSleepPeriod()">Get</button>
+  </div>
+  <div class="form-inline">
+    <input type="text" id="clientSleep" class="form-control" style="width: 4em; padding-left: .25rem; padding-right: .25rem">
+    &nbsp;
+    <button class="btn btn-outline-secondary" onclick="clientSleep()">Client Sleep</button>
   </div>
 </div>
 <script type="text/javascript">
@@ -174,6 +179,18 @@
     })
         .then(__ => document.getElementById('msg').value = '')
         .catch(error => console.error(error))
+  }
+
+  function clientSleep() {
+      fetch('/add-action', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ action: 'Sleep', x: parseInt(document.getElementById('clientSleep').value) })
+      })
+          .then(__ => document.getElementById('msg').value = '')
+          .catch(error => console.error(error))
   }
 
   function getDimension() {

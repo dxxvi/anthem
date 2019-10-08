@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>home</groupId>
 	<artifactId>screen-capture</artifactId>
-	<version>1.2</version>
+	<version>1.3</version>
 	<name>screen-capture</name>
 
 	<properties>
