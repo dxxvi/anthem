@@ -2,6 +2,8 @@ package home;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.googlecode.pngtastic.core.PngImage;
+import com.googlecode.pngtastic.core.PngOptimizer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +20,7 @@ import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +45,8 @@ public class Main {
 
         rectangle = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
         robot = new Robot();
-        robot.setAutoDelay(99);
+        robot.setAutoDelay(82);
+        robot.setAutoWaitForIdle(true);
 
         ResponseEntity<String> responseEntity = sendScreen();
 
@@ -73,51 +77,122 @@ public class Main {
                 }
                 else if (action.action.startsWith("type") && action.text != null) {
                     for (char c : action.text.toCharArray()) {
-                        if ('a' <= c && c <= 'z') type(65 + c - 'a');
-                        else if ('A' <= c && c<= 'Z') shiftType(65 + c - 'a');
-                        else if ('0' <= c && c <= '9') type(48 + c - '0');
-                        else if (c == '`') type(192);
+                        if (c == 'a') type(KeyEvent.VK_A);
+                        else if (c == 'b') type(KeyEvent.VK_B);
+                        else if (c == 'c') type(KeyEvent.VK_C);
+                        else if (c == 'd') type(KeyEvent.VK_D);
+                        else if (c == 'e') type(KeyEvent.VK_E);
+                        else if (c == 'f') type(KeyEvent.VK_F);
+                        else if (c == 'g') type(KeyEvent.VK_G);
+                        else if (c == 'h') type(KeyEvent.VK_H);
+                        else if (c == 'i') type(KeyEvent.VK_I);
+                        else if (c == 'j') type(KeyEvent.VK_J);
+                        else if (c == 'k') type(KeyEvent.VK_K);
+                        else if (c == 'l') type(KeyEvent.VK_L);
+                        else if (c == 'm') type(KeyEvent.VK_M);
+                        else if (c == 'n') type(KeyEvent.VK_N);
+                        else if (c == 'o') type(KeyEvent.VK_O);
+                        else if (c == 'p') type(KeyEvent.VK_P);
+                        else if (c == 'q') type(KeyEvent.VK_Q);
+                        else if (c == 'r') type(KeyEvent.VK_R);
+                        else if (c == 's') type(KeyEvent.VK_S);
+                        else if (c == 't') type(KeyEvent.VK_T);
+                        else if (c == 'u') type(KeyEvent.VK_U);
+                        else if (c == 'v') type(KeyEvent.VK_V);
+                        else if (c == 'x') type(KeyEvent.VK_X);
+                        else if (c == 'w') type(KeyEvent.VK_W);
+                        else if (c == 'y') type(KeyEvent.VK_Y);
+                        else if (c == 'z') type(KeyEvent.VK_Z);
+                        else if (c == 'A') shiftType(KeyEvent.VK_A);
+                        else if (c == 'B') shiftType(KeyEvent.VK_B);
+                        else if (c == 'C') shiftType(KeyEvent.VK_C);
+                        else if (c == 'D') shiftType(KeyEvent.VK_D);
+                        else if (c == 'E') shiftType(KeyEvent.VK_E);
+                        else if (c == 'F') shiftType(KeyEvent.VK_F);
+                        else if (c == 'G') shiftType(KeyEvent.VK_G);
+                        else if (c == 'H') shiftType(KeyEvent.VK_H);
+                        else if (c == 'I') shiftType(KeyEvent.VK_I);
+                        else if (c == 'J') shiftType(KeyEvent.VK_J);
+                        else if (c == 'K') shiftType(KeyEvent.VK_K);
+                        else if (c == 'L') shiftType(KeyEvent.VK_L);
+                        else if (c == 'M') shiftType(KeyEvent.VK_M);
+                        else if (c == 'N') shiftType(KeyEvent.VK_N);
+                        else if (c == 'O') shiftType(KeyEvent.VK_O);
+                        else if (c == 'P') shiftType(KeyEvent.VK_P);
+                        else if (c == 'Q') shiftType(KeyEvent.VK_Q);
+                        else if (c == 'R') shiftType(KeyEvent.VK_R);
+                        else if (c == 'S') shiftType(KeyEvent.VK_S);
+                        else if (c == 'T') shiftType(KeyEvent.VK_T);
+                        else if (c == 'U') shiftType(KeyEvent.VK_U);
+                        else if (c == 'V') shiftType(KeyEvent.VK_V);
+                        else if (c == 'X') shiftType(KeyEvent.VK_X);
+                        else if (c == 'W') shiftType(KeyEvent.VK_W);
+                        else if (c == 'Y') shiftType(KeyEvent.VK_Y);
+                        else if (c == 'Z') shiftType(KeyEvent.VK_Z);
+                        else if (c == '0') type(KeyEvent.VK_0);
+                        else if (c == '1') type(KeyEvent.VK_1);
+                        else if (c == '2') type(KeyEvent.VK_2);
+                        else if (c == '3') type(KeyEvent.VK_3);
+                        else if (c == '4') type(KeyEvent.VK_4);
+                        else if (c == '5') type(KeyEvent.VK_5);
+                        else if (c == '6') type(KeyEvent.VK_6);
+                        else if (c == '7') type(KeyEvent.VK_7);
+                        else if (c == '8') type(KeyEvent.VK_8);
+                        else if (c == '9') type(KeyEvent.VK_9);
+                        else if (c == '`') type(KeyEvent.VK_BACK_QUOTE);
                         else if (c == '~') shiftType(192);
-                        else if (c == '!') shiftType(49);
-                        else if (c == '@') shiftType(50);
-                        else if (c == '#') shiftType(51);
-                        else if (c == '$') shiftType(52);
+                        else if (c == '!') type(KeyEvent.VK_EXCLAMATION_MARK);
+                        else if (c == '@') type(KeyEvent.VK_AT);
+                        else if (c == '#') type(KeyEvent.VK_NUMBER_SIGN);
+                        else if (c == '$') type(KeyEvent.VK_DOLLAR);
                         else if (c == '%') shiftType(53);
-                        else if (c == '^') shiftType(54);
-                        else if (c == '&') shiftType(55);
-                        else if (c == '*') shiftType(56);
-                        else if (c == '(') shiftType(57);
-                        else if (c == ')') shiftType(48);
-                        else if (c == '-') type(173);
-                        else if (c == '_') shiftType(173);
-                        else if (c == '=') type(61);
-                        else if (c == '+') shiftType(61);
-                        else if (c == '[') type(219);
-                        else if (c == '{') shiftType(219);
-                        else if (c == ']') type(221);
-                        else if (c == '}') shiftType(221);
-                        else if (c == '\\') type(220);
+                        else if (c == '^') type(KeyEvent.VK_CIRCUMFLEX);
+                        else if (c == '&') type(KeyEvent.VK_AMPERSAND);
+                        else if (c == '*') type(KeyEvent.VK_ASTERISK);
+                        else if (c == '(') type(KeyEvent.VK_LEFT_PARENTHESIS);
+                        else if (c == ')') type(KeyEvent.VK_RIGHT_PARENTHESIS);
+                        else if (c == '-') type(KeyEvent.VK_MINUS);
+                        else if (c == '_') type(KeyEvent.VK_UNDERSCORE);
+                        else if (c == '=') type(KeyEvent.VK_EQUALS);
+                        else if (c == '+') type(KeyEvent.VK_PLUS);
+                        else if (c == '[') type(KeyEvent.VK_OPEN_BRACKET);
+                        else if (c == '{') type(KeyEvent.VK_BRACELEFT);
+                        else if (c == ']') type(KeyEvent.VK_CLOSE_BRACKET);
+                        else if (c == '}') type(KeyEvent.VK_BRACERIGHT);
+                        else if (c == '\\') type(KeyEvent.VK_BACK_SLASH);
                         else if (c == '|') shiftType(220);
-                        else if (c == ';') type(59);
-                        else if (c == ':') shiftType(59);
-                        else if (c == '\'') type(222);
-                        else if (c == '"') shiftType(222);
-                        else if (c == ',') type(188);
-                        else if (c == '<') shiftType(188);
-                        else if (c == '.') type(190);
-                        else if (c == '>') shiftType(190);
-                        else if (c == '/') type(191);
+                        else if (c == ';') type(KeyEvent.VK_SEMICOLON);
+                        else if (c == ':') type(KeyEvent.VK_COLON);
+                        else if (c == '\'') type(KeyEvent.VK_QUOTE);
+                        else if (c == '"') type(KeyEvent.VK_QUOTEDBL);
+                        else if (c == ',') type(KeyEvent.VK_COMMA);
+                        else if (c == '<') type(KeyEvent.VK_LESS);
+                        else if (c == '.') type(KeyEvent.VK_PERIOD);
+                        else if (c == '>') type(KeyEvent.VK_GREATER);
+                        else if (c == '/') type(KeyEvent.VK_SLASH);
                         else if (c == '?') shiftType(191);
-                        else if (c == ' ') type(32);
+                        else if (c == ' ') type(KeyEvent.VK_SPACE);
                     }
-                    if (action.action.equals("typeAndEnter")) {
-                        System.out.println("typeAndEnter");
+                    if (action.action.equals("typeAndEnter"))
                         type(KeyEvent.VK_ENTER);
-                    }
                     sendScreen();
                 }
                 else if (action.action.equals("ESC")) {
                     type(KeyEvent.VK_ESCAPE);
+                    sendScreen();
+                }
+                else if (action.action.equals("CapsLock"))
+                    type(KeyEvent.VK_CAPS_LOCK);
+                else if (action.action.equals("Backspace")) {
+                    type(KeyEvent.VK_BACK_SPACE);
+                    sendScreen();
+                }
+                else if (action.action.equals("CtrlZ")) {
+                    robot.keyPress(KeyEvent.VK_CONTROL);
+                    robot.delay(82);
+                    type(KeyEvent.VK_Z);
+                    robot.delay(82);
+                    robot.keyRelease(KeyEvent.VK_CONTROL);
                     sendScreen();
                 }
             }
@@ -128,8 +203,7 @@ public class Main {
         BufferedImage screenFullImage = robot.createScreenCapture(rectangle);
         ByteArrayOutputStream baos = new ByteArrayOutputStream(900_000);
         ImageIO.write(screenFullImage, "png", baos);
-        byte[] bytes = baos.toByteArray();
-        System.out.println(bytes.length);
+        byte[] bytes = pngTasticOptimize(baos.toByteArray());
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG_VALUE);
@@ -139,13 +213,43 @@ public class Main {
     }
 
     private static void type(int keycode) {
-        robot.keyPress(keycode);
-        robot.keyRelease(keycode);
+        try {
+            robot.keyPress(keycode);
+            robot.delay(82);
+            robot.keyRelease(keycode);
+            robot.delay(82);
+        }
+        catch (Throwable __) { /* who cares */ }
     }
 
     private static void shiftType(int keycode) {
-        robot.keyPress(16);
-        type(keycode);
-        robot.keyRelease(16);
+        try {
+            robot.keyPress(KeyEvent.VK_CAPS_LOCK);
+            robot.delay(82);
+            robot.keyRelease(KeyEvent.VK_CAPS_LOCK);
+            robot.delay(82);
+            type(keycode);
+            robot.keyPress(KeyEvent.VK_CAPS_LOCK);
+            robot.delay(82);
+            robot.keyRelease(KeyEvent.VK_CAPS_LOCK);
+            robot.delay(82);
+        }
+        catch (Throwable __) { /* who cares */ }
+    }
+
+    private static byte[] pngTasticOptimize(byte[] bytes) {
+        PngOptimizer optimizer = new PngOptimizer();
+        PngImage image = new PngImage(new ByteArrayInputStream(bytes));
+        try {
+            long startTime = System.currentTimeMillis();
+            PngImage optimizedImage = optimizer.optimize(image, true, 5);
+            ByteArrayOutputStream optimizedBytes = new ByteArrayOutputStream();
+            final long optimizedSize = optimizedImage.writeDataOutputStream(optimizedBytes).size();
+            System.out.printf("%d %dms %d\n", bytes.length, System.currentTimeMillis() - startTime, optimizedSize);
+            return optimizedSize > bytes.length ? bytes : optimizedBytes.toByteArray();
+        }
+        catch (IOException __) {
+            return bytes;
+        }
     }
 }

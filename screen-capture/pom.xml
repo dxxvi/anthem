@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>home</groupId>
 	<artifactId>screen-capture</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<name>screen-capture</name>
 
 	<properties>
@@ -22,6 +22,11 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.9.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.depsypher</groupId>
+			<artifactId>pngtastic</artifactId>
+			<version>1.5</version>
 		</dependency>
 	</dependencies>
 

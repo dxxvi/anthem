@@ -44,12 +44,16 @@
   <textarea class="form-control" id="msg"></textarea>
   <br>
   <button class="btn btn-outline-secondary" onclick="send()">&gt;</button>
-  &nbsp;&nbsp;
+  &nbsp;
   <button class="btn btn-outline-secondary" onclick="typeText()">Type</button>
-  &nbsp;&nbsp;
-  <button class="btn btn-outline-secondary" onclick="typeTextAndEnter()">Enter</button>
-  &nbsp;&nbsp;
+  &nbsp;
+  <button class="btn btn-outline-secondary" onclick="typeTextAndEnter()">↵</button>
+  &nbsp;
   <button class="btn btn-outline-secondary" onclick="escape()">ESC</button>
+  &nbsp;
+  <button class="btn btn-outline-secondary" onclick="backspace()">BSPC</button>
+  &nbsp;
+  <button class="btn btn-outline-secondary" onclick="ctrlZ()">CtrlZ</button>
   <br><br>
   <div class="form-inline">
     <label for="sleepPeriod">Sleep</label>
@@ -143,6 +147,30 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ action: 'ESC' })
+    })
+        .then(__ => document.getElementById('msg').value = '')
+        .catch(error => console.error(error))
+  }
+
+  function backspace() {
+    fetch('/add-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action: 'Backspace' })
+    })
+        .then(__ => document.getElementById('msg').value = '')
+        .catch(error => console.error(error))
+  }
+
+  function ctrlZ() {
+    fetch('/add-action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action: 'Backspace' })
     })
         .then(__ => document.getElementById('msg').value = '')
         .catch(error => console.error(error))
