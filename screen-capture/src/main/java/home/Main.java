@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.pngtastic.core.PngImage;
 import com.googlecode.pngtastic.core.PngOptimizer;
+import com.googlecode.pngtastic.core.processing.PngtasticCompressionHandler;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,9 +15,7 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import javax.imageio.ImageIO;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -197,12 +196,21 @@ public class Main {
                 }
             }
         }
+
+        PngtasticCompressionHandler.EXECUTOR_SERVICE.shutdown();
     }
 
     private static ResponseEntity<String> sendScreen() throws Exception {
         BufferedImage screenFullImage = robot.createScreenCapture(rectangle);
+
+        BufferedImage bi = new BufferedImage(screenFullImage.getWidth(), screenFullImage.getHeight(),
+                BufferedImage.TYPE_USHORT_555_RGB);
+        Graphics2D g2D = bi.createGraphics();
+        g2D.drawImage(screenFullImage, 0, 0, null);
+        g2D.dispose();
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream(900_000);
-        ImageIO.write(screenFullImage, "png", baos);
+        ImageIO.write(bi, "png", baos);
         byte[] bytes = pngTasticOptimize(baos.toByteArray());
 
         HttpHeaders headers = new HttpHeaders();
@@ -242,7 +250,7 @@ public class Main {
         PngImage image = new PngImage(new ByteArrayInputStream(bytes));
         try {
             long startTime = System.currentTimeMillis();
-            PngImage optimizedImage = optimizer.optimize(image, true, 5);
+            PngImage optimizedImage = optimizer.optimize(image, true, null);
             ByteArrayOutputStream optimizedBytes = new ByteArrayOutputStream();
             final long optimizedSize = optimizedImage.writeDataOutputStream(optimizedBytes).size();
             System.out.printf("%d %dms %d\n", bytes.length, System.currentTimeMillis() - startTime, optimizedSize);

@@ -4,13 +4,9 @@ import com.googlecode.pngtastic.core.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.Deflater;
@@ -23,36 +19,26 @@ import java.util.zip.DeflaterOutputStream;
  * @author me (I want to use an Executor for the null compressionLevel case)
  */
 public class PngtasticCompressionHandler implements PngCompressionHandler {
+    public static final ExecutorService EXECUTOR_SERVICE =
+            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
 
-    private final Logger log;
+    private static final int[] compressionStrategies =
+            { Deflater.DEFAULT_STRATEGY, Deflater.FILTERED, Deflater.HUFFMAN_ONLY };
 
-    private static final List<Integer> compressionStrategies = Arrays.asList(
-            Deflater.DEFAULT_STRATEGY,
-            Deflater.FILTERED,
-            Deflater.HUFFMAN_ONLY);
-
-    /** */
-    public PngtasticCompressionHandler(Logger log) {
-        this.log = log;
-    }
+    public PngtasticCompressionHandler(Logger log) {}
+    public PngtasticCompressionHandler() {}
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public byte[] deflate(PngByteArrayOutputStream inflatedImageData, Integer compressionLevel, boolean concurrent) throws IOException {
-        final List<byte[]> results = (concurrent)
-                ? deflateImageDataConcurrently(inflatedImageData, compressionLevel)
-                : deflateImageDataSerially(inflatedImageData, compressionLevel, Deflater.DEFAULT_STRATEGY);
+    public byte[] deflate(PngByteArrayOutputStream inflatedImageData, Integer compressionLevel, boolean concurrent) {
+        final List<byte[]> results = deflateImageDataConcurrently(inflatedImageData);
 
         byte[] result = null;
-        for (int i = 0; i < results.size(); i++) {
-            final byte[] data = results.get(i);
-            if (result == null || (data.length < result.length)) {
+        for (byte[] data : results)
+            if (result == null || (data.length < result.length))
                 result = data;
-            }
-        }
-        log.debug("Image bytes=%d", (result == null) ? -1 : result.length);
 
         return result;
     }
@@ -62,82 +48,58 @@ public class PngtasticCompressionHandler implements PngCompressionHandler {
         return Base64.encodeBytes(bytes);
     }
 
+    private static class DeflatingTask implements Runnable {
+        private final List<byte[]> results;
+        private final CountDownLatch latch;
+        private final PngByteArrayOutputStream inflatedImageData;
+        private final int strategy;
+        private final int compression;
+
+        public DeflatingTask(List<byte[]> results, CountDownLatch latch, PngByteArrayOutputStream inflatedImageData, int strategy, int compression) {
+            this.results = results;
+            this.latch = latch;
+            this.inflatedImageData = inflatedImageData;
+            this.strategy = strategy;
+            this.compression = compression;
+        }
+
+        @Override
+        public void run() {
+            ByteArrayOutputStream baos = PngtasticCompressionHandler.deflate(inflatedImageData, strategy, compression);
+            if (baos != null)
+                results.add(baos.toByteArray());
+            latch.countDown();
+        }
+    }
     /*
      * Do the work of deflating (compressing) the image data with the
      * different compression strategies in separate threads to take
      * advantage of multiple core architectures.
      */
-    private List<byte[]> deflateImageDataConcurrently(final PngByteArrayOutputStream inflatedImageData, final Integer compressionLevel) {
-        final Collection<byte[]> results = new ConcurrentLinkedQueue<>();
+    private List<byte[]> deflateImageDataConcurrently(final PngByteArrayOutputStream inflatedImageData) {
+        final List<byte[]> results = new CopyOnWriteArrayList<>();
 
-        final Collection<Callable<Object>> tasks = new ArrayList<>();
+        DeflatingTask dTask = null;
+        CountDownLatch latch =
+                new CountDownLatch(compressionStrategies.length * (Deflater.BEST_COMPRESSION - Deflater.NO_COMPRESSION));
         for (final int strategy : compressionStrategies) {
-            tasks.add(Executors.callable(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        results.add(PngtasticCompressionHandler.this.deflateImageData(inflatedImageData, strategy, compressionLevel));
-                    } catch (Throwable e) {
-                        PngtasticCompressionHandler.this.log.error("Uncaught Exception: %s", e.getMessage());
-                    }
-                }
-            }));
-        }
-
-        final ExecutorService compressionThreadPool = Executors.newFixedThreadPool(compressionStrategies.size());
-        try {
-            compressionThreadPool.invokeAll(tasks);
-        } catch (InterruptedException ex) {
-        } finally {
-            compressionThreadPool.shutdown();
-        }
-
-        return new ArrayList<>(results);
-    }
-
-    /* */
-    private List<byte[]> deflateImageDataSerially(PngByteArrayOutputStream inflatedImageData, Integer compressionLevel, Integer compressionStrategy) {
-        final List<byte[]> results = new ArrayList<>();
-
-        final List<Integer> strategies = (compressionStrategy == null) ? compressionStrategies
-                : Collections.singletonList(compressionStrategy);
-
-        for (final int strategy : strategies) {
-            try {
-                results.add(PngtasticCompressionHandler.this.deflateImageData(inflatedImageData, strategy, compressionLevel));
-            } catch (Throwable e) {
-                PngtasticCompressionHandler.this.log.error("Uncaught Exception: %s", e.getMessage());
+            for (int compression = Deflater.BEST_COMPRESSION; compression > Deflater.NO_COMPRESSION; compression--) {
+                if (dTask == null)
+                    dTask = new DeflatingTask(results, latch, inflatedImageData, strategy, compression);
+                else
+                    EXECUTOR_SERVICE.execute(new DeflatingTask(results, latch, inflatedImageData, strategy, compression));
             }
         }
-
+        dTask.run();
+        try {
+            latch.await();
+        }
+        catch (InterruptedException __) { /* who cares */ }
         return results;
     }
 
     /* */
-    private byte[] deflateImageData(PngByteArrayOutputStream inflatedImageData, int strategy, Integer compressionLevel) throws IOException {
-        byte[] result = null;
-        int bestCompression = Deflater.BEST_COMPRESSION;
-
-        if (compressionLevel == null || compressionLevel > Deflater.BEST_COMPRESSION || compressionLevel < Deflater.NO_COMPRESSION) {
-            for (int compression = Deflater.BEST_COMPRESSION; compression > Deflater.NO_COMPRESSION; compression--) {
-                final ByteArrayOutputStream deflatedOut = deflate(inflatedImageData, strategy, compression);
-
-                if (result == null || (result.length > deflatedOut.size())) {
-                    result = deflatedOut.toByteArray();
-                    bestCompression = compression;
-                }
-            }
-        } else {
-            result = deflate(inflatedImageData, strategy, compressionLevel).toByteArray();
-            bestCompression = compressionLevel;
-        }
-        log.debug("Compression strategy: %s, compression level=%d, bytes=%d", strategy, bestCompression, (result == null) ? -1 : result.length);
-
-        return result;
-    }
-
-    /* */
-    private ByteArrayOutputStream deflate(PngByteArrayOutputStream inflatedImageData, int strategy, int compression) throws IOException {
+    private static ByteArrayOutputStream deflate(PngByteArrayOutputStream inflatedImageData, int strategy, int compression) {
         final ByteArrayOutputStream deflatedOut = new ByteArrayOutputStream();
         final Deflater deflater = new Deflater(compression);
         deflater.setStrategy(strategy);
@@ -146,7 +108,11 @@ public class PngtasticCompressionHandler implements PngCompressionHandler {
             final DeflaterOutputStream stream = new DeflaterOutputStream(deflatedOut, deflater);
             stream.write(inflatedImageData.get(), 0, inflatedImageData.len());
             stream.close();
-        } finally {
+        }
+        catch (IOException __) {
+            return null;
+        }
+        finally {
             deflater.end();
         }
 
