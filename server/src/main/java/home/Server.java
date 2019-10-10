@@ -4,11 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import static org.springframework.http.HttpStatus.*;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,8 @@ import java.util.Map;
 @SpringBootApplication
 public class Server {
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private long sleepInterval = 60_000;
 
     private byte[] bytes = new byte[0];
     private byte[] lyBytes = new byte[0];
@@ -40,17 +45,24 @@ public class Server {
     @PostMapping(path = "/add-action", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addAction(@RequestBody Action action) throws Exception {
-        actionQueue.add(action);
+        if ("Sleep".equals(action.getAction()))
+            sleepInterval = action.getX();
+        else
+            actionQueue.add(action);
         return needReload(false);
     }
 
     @PostMapping(path = "/screen-upload", consumes = MediaType.IMAGE_JPEG_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Action> screenUpload(@RequestBody byte[] bytes) {
+    public ResponseEntity<List<Action>> screenUpload(@RequestBody byte[] bytes,
+                                                     @RequestHeader("delete_actions") boolean deleteActions) {
         bytesUpdatedAt = System.currentTimeMillis();
         this.bytes = bytes;
 
-        return actionQueue.clear();
+        return ResponseEntity
+                .status(OK)
+                .header("sleep_interval", String.valueOf(sleepInterval))
+                .body(deleteActions ? actionQueue.clear() : Collections.emptyList());
     }
 
     @PostMapping(path = "/ly-screen-upload", consumes = MediaType.IMAGE_JPEG_VALUE)
