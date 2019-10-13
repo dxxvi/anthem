@@ -6,6 +6,7 @@ public class Action {
     int y;
     String text;
 
+
     public String getAction() {
         return action;
     }

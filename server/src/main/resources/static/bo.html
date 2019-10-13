@@ -11,6 +11,7 @@
     }
     #mesend { font-family: sans-serif; color: #666; max-height: 300px; overflow-y: auto }
   </style>
+
 </head>
 <body style="line-height: 1.44; color: #444; margin: 0">
 <div style="float: left; width: 85.6%">
@@ -56,141 +57,66 @@
   <button class="btn btn-outline-secondary" onclick="ctrlZ()">CtrlZ</button>
   <br><br>
   <div class="form-inline">
-    <label for="sleepPeriod">Sleep</label>
-    &nbsp;
-    <input type="text" id="sleepPeriod" class="form-control" style="width: 3em; padding-left: .25rem; padding-right: .25rem">
-    &nbsp;
-    <button class="btn btn-outline-secondary" onclick="setSleepPeriod()">Set</button>
-    &nbsp;
-    <button class="btn btn-outline-secondary" onclick="getSleepPeriod()">Get</button>
-  </div>
-  <div class="form-inline">
     <input type="text" id="clientSleep" class="form-control" style="width: 4em; padding-left: .25rem; padding-right: .25rem">
     &nbsp;
     <button class="btn btn-outline-secondary" onclick="clientSleep()">Client Sleep</button>
   </div>
 </div>
 <script type="text/javascript">
-  let sleepPeriod = 8419;
   let width = 1920;
   let height = 1080;
 
-  async function runPeriodically() {
-    const response = await fetch('/need-reload', {
-      method: 'GET',
-      cache: 'no-cache'
-    });
-    if (response.ok && response.status === 201) reloadScreenshot();
-    const json = await response.json();
-    if (json['message']) {
+  const webSocket = new WebSocket(`ws://${location.hostname}:${location.port === "" ? 80 : location.port}/ws/bo`);
+  webSocket.onmessage = function(e) {
+    const action = JSON.parse(e.data);
+    if (action.action === 'image_uploaded')
+      document.getElementById('ss').setAttribute('src', '/latest-screen?__=' + new Date().getTime());
+    else if (action.action === 'me_sent') {
       const p = document.createElement('p');
-      p.innerHTML = json['message'];
+      p.innerHTML = action.text;
       document.getElementById('mesend').appendChild(p)
     }
-    setTimeout(runPeriodically, sleepPeriod)
-  }
-
-  function getSleepPeriod() {
-    document.getElementById('sleepPeriod').value = sleepPeriod;
-  }
-
-  function setSleepPeriod() {
-    sleepPeriod = parseInt(document.getElementById('sleepPeriod').value);
-    getSleepPeriod();
-  }
-
-  function reloadScreenshot() {
-    document.getElementById('ss').setAttribute('src', '/latest-screen?__=' + new Date().getTime())
-  }
+  };
 
   function send() {
-    fetch('/bo-send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-      body: document.getElementById('msg').value
-    })
-        .then(__ => document.getElementById('msg').value = '')
-        .catch(error => console.error(error));
+    _sendDataInMsg('bo_sent')
   }
 
   function typeText() {
-    fetch('/add-action', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        action: 'type',
-        text: document.getElementById('msg').value
-      })
-    })
-        .then(__ => document.getElementById('msg').value = '')
-        .catch(error => console.error(error))
+    _sendDataInMsg('type')
   }
 
   function typeTextAndEnter() {
-    fetch('/add-action', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        action: 'typeAndEnter',
-        text: document.getElementById('msg').value
-      })
-    })
-        .then(__ => document.getElementById('msg').value = '')
-        .catch(error => console.error(error))
+    _sendDataInMsg('typeAndEnter')
+  }
+
+  function _sendDataInMsg(actionType) {
+    const action = { action: actionType, text: document.getElementById('msg').value };
+    if (webSocket && webSocket.readyState === 1) {
+      webSocket.send(JSON.stringify(action));
+      document.getElementById('msg').value = '';
+    }
   }
 
   function escape() {
-    fetch('/add-action', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ action: 'ESC' })
-    })
-        .then(__ => document.getElementById('msg').value = '')
-        .catch(error => console.error(error))
+    if (webSocket && webSocket.readyState === 1)
+      webSocket.send(JSON.stringify({ action: 'ESC' }));
   }
 
   function backspace() {
-    fetch('/add-action', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ action: 'Backspace' })
-    })
-        .then(__ => document.getElementById('msg').value = '')
-        .catch(error => console.error(error))
+    if (webSocket && webSocket.readyState === 1)
+      webSocket.send(JSON.stringify({ action: 'Backspace' }));
   }
 
   function ctrlZ() {
-    fetch('/add-action', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ action: 'Backspace' })
-    })
-        .then(__ => document.getElementById('msg').value = '')
-        .catch(error => console.error(error))
+    if (webSocket && webSocket.readyState === 1)
+      webSocket.send(JSON.stringify({ action: 'CtrlZ' }));
   }
 
   function clientSleep() {
-      fetch('/add-action', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ action: 'Sleep', x: parseInt(document.getElementById('clientSleep').value) })
-      })
-          .then(__ => document.getElementById('msg').value = '')
-          .catch(error => console.error(error))
+    const action = { action: 'Sleep', x: parseInt(document.getElementById('clientSleep').value) };
+    if (webSocket && webSocket.readyState === 1)
+      webSocket.send(JSON.stringify(action));
   }
 
   function getDimension() {
@@ -203,24 +129,17 @@
     height = document.getElementById('height').value
   }
 
-  setTimeout(runPeriodically, sleepPeriod);
-
   document.getElementById('ss').onclick = function(e) {
     const img = document.getElementById('ss');
     const action = Array.from(document.querySelectorAll('input[type="radio"][name="mousebutton"]'))
         .find(radio => radio.checked)
         .value;
-    fetch('/add-action', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    if (webSocket && webSocket.readyState === 1)
+      webSocket.send(JSON.stringify({
         action: action,
         x: Math.round(e.pageX / img.clientWidth * width),
         y: Math.round(e.pageY / img.clientHeight * height)
-      })
-    })
+      }));
   };
 </script>
 </body>

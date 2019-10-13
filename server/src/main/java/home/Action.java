@@ -1,10 +1,10 @@
 package home;
 
 public class Action {
-    private String action;
-    private int x;
-    private int y;
-    private String text;
+    String action;
+    int x;
+    int y;
+    String text;
 
     public String getAction() {
         return action;
