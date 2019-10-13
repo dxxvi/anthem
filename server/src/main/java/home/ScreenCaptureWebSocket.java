@@ -33,6 +33,7 @@ public class ScreenCaptureWebSocket implements WebSocketListener {
 
     @Override
     public void onWebSocketConnect(Session session) {
+        log.debug("good");
         if (this.session != null && this.session.isOpen())
             this.session.close();
         this.session = session;
@@ -50,7 +51,7 @@ public class ScreenCaptureWebSocket implements WebSocketListener {
     public void sendToScreenCapture(String message) {
         if (session != null && session.isOpen())
             try {
-                session.getRemote().sendBytes(ByteBuffer.wrap(message.getBytes()));
+                session.getRemote().sendString(message);
             }
             catch (Throwable __) { /* who cares */ }
     }

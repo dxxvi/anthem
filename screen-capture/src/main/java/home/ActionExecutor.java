@@ -161,6 +161,8 @@ public class ActionExecutor implements Runnable {
                     robot.keyRelease(KeyEvent.VK_CONTROL);
                     needToSendAnotherScreen = true;
                 }
+                else if ("Sleep".equals(action.action) && action.x > 0)
+                    Main.sleepInterval = action.x;
 
                 if (needToSendAnotherScreen) {
                     Thread.sleep(194);

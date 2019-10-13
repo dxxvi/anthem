@@ -22,7 +22,7 @@ public class Main {
     private static final WebSocketClient webSocketClient = new WebSocketClient();
     private static final WebSocket webSocket = new WebSocket();
 
-    private static long sleepInterval = 60_000;
+    public static long sleepInterval = 60_000;
     private static long lastTimeScreenSent = 0;
 
     private static Robot robot;
@@ -60,6 +60,7 @@ public class Main {
 
         httpClient.stop();
         webSocketClient.stop();
+        System.exit(0);
     }
 
     public static void sendScreen() throws Exception {

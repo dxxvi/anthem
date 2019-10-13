@@ -63,7 +63,7 @@ public class BoWebSocket implements WebSocketListener {
     public void imageUploaded() {
         if (session != null && session.isOpen())
             try {
-                session.getRemote().sendBytes(ByteBuffer.wrap("{\"action\":\"image_uploaded\"}".getBytes()));
+                session.getRemote().sendString("{\"action\":\"image_uploaded\"}");
             }
             catch (Throwable __) { /* who cares */ }
     }

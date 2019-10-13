@@ -44,7 +44,7 @@ public class WebSocket implements WebSocketListener {
             Action action = new Action();
             action.action = "image_uploaded";
             try {
-                session.getRemote().sendBytes(ByteBuffer.wrap(Main.gson.toJson(action).getBytes()));
+                session.getRemote().sendString(Main.gson.toJson(action));
             }
             catch (Throwable __) { /* who cares */ }
         }

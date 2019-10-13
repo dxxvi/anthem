@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 import org.eclipse.jetty.http.HttpStatus;
 import spark.Spark;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 public class Server {
     public static final Gson gson = new Gson();
 
@@ -23,6 +20,9 @@ public class Server {
         screenCaptureWebSocket.setBoWebSocket(boWebSocket);
 
         Spark.port(8080);
+
+        Spark.staticFileLocation("/static");
+
         Spark.webSocket("/ws/bo", boWebSocket);
         Spark.webSocket("/ws/me", meWebSocket);
         Spark.webSocket("/ws/screen-capture", screenCaptureWebSocket);
@@ -40,7 +40,5 @@ public class Server {
             response.raw().getOutputStream().write(bytes);
             return null;
         });
-
-
     }
 }
