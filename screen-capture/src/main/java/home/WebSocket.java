@@ -22,7 +22,7 @@ public class WebSocket implements WebSocketListener {
 
     @Override
     public void onWebSocketClose(int statusCode, String reason) {
-        session = null;
+        System.exit(0);
     }
 
     @Override
@@ -32,7 +32,6 @@ public class WebSocket implements WebSocketListener {
 
     @Override
     public void onWebSocketError(Throwable cause) {
-
     }
 
     public void setActionExecutor(ActionExecutor actionExecutor) {

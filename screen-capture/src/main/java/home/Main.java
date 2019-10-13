@@ -2,6 +2,7 @@ package home;
 
 import com.google.gson.Gson;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.client.util.BytesContentProvider;
 import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
@@ -49,13 +50,14 @@ public class Main {
         webSocket.setActionExecutor(actionExecutor);
         new Thread(actionExecutor).start();
 
-        for (int i = 0; i < 5; i++)
+        while (true)
             try {
                 sendScreen();
-                webSocket.justUploadImage();
                 Thread.sleep(sleepInterval);
             }
-            catch (Throwable __) { /* who cares */ }
+            catch (Throwable __) {
+                break;
+            }
 
         httpClient.stop();
         webSocketClient.stop();
@@ -80,10 +82,15 @@ public class Main {
         byte[] bytes = baos.toByteArray();
 
         lastTimeScreenSent = now;
-        httpClient.newRequest(String.format("http://%s:%s/screen-upload", host, port))
+        ContentResponse response = httpClient.newRequest(String.format("http://%s:%s/screen-upload", host, port))
                 .method(HttpMethod.POST)
                 .content(new BytesContentProvider("image/png", bytes))
                 .send();
         System.out.println(bytes.length / 1000 + "K");
+        if (response.getStatus() != 201) {
+            System.out.println("http status code: " + response.getStatus());
+            System.exit(0);
+        }
+        webSocket.justUploadImage();
     }
 }

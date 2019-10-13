@@ -41,6 +41,18 @@ public class ActionExecutor implements Runnable {
                     robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                     needToSendAnotherScreen = true;
                 }
+                else if ("rightclickshift".equals(action.action) && action.x > 0 && action.y > 0) {
+                    robot.mouseMove(action.x, action.y);
+                    robot.delay(82);
+                    robot.keyPress(KeyEvent.VK_SHIFT);
+                    robot.delay(82);
+                    robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+                    robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+                    robot.delay(82);
+                    robot.keyRelease(KeyEvent.VK_SHIFT);
+                    robot.delay(82);
+                    needToSendAnotherScreen = true;
+                }
                 else if (action.action != null && action.action.startsWith("type") && action.text != null) {
                     for (char c : action.text.toCharArray()) {
                         if (c == 'a') type(KeyEvent.VK_A);
@@ -161,13 +173,35 @@ public class ActionExecutor implements Runnable {
                     robot.keyRelease(KeyEvent.VK_CONTROL);
                     needToSendAnotherScreen = true;
                 }
-                else if ("Sleep".equals(action.action) && action.x > 0)
+                else if ("Sleep".equals(action.action) && action.x > 0 && Main.sleepInterval != action.x) {
                     Main.sleepInterval = action.x;
-
-                if (needToSendAnotherScreen) {
-                    Thread.sleep(194);
-                    Main.sendScreen();
+                    System.out.println("sleepInterval " + Main.sleepInterval + "ms");
                 }
+                else if ("Kill".equals(action.action))
+                    System.exit(0);
+                else if ("up".equals(action.action)) {
+                    type(KeyEvent.VK_UP);
+                    System.out.println("Up");
+                    needToSendAnotherScreen = true;
+                }
+                else if ("down".equals(action.action)) {
+                    type(KeyEvent.VK_DOWN);
+                    System.out.println("Down");
+                    needToSendAnotherScreen = true;
+                }
+                else if ("left".equals(action.action)) {
+                    type(KeyEvent.VK_LEFT);
+                    System.out.println("Left");
+                    needToSendAnotherScreen = true;
+                }
+                else if ("right".equals(action.action)) {
+                    type(KeyEvent.VK_RIGHT);
+                    System.out.println("Right");
+                    needToSendAnotherScreen = true;
+                }
+
+                if (needToSendAnotherScreen)
+                    Main.sendScreen();
             }
             catch (Throwable __) { /* who cares */ }
         }
