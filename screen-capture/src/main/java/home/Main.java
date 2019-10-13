@@ -62,7 +62,7 @@ public class Main {
                     needToSendAnotherScreen = doActions(actions);
                 }
 
-                if (needToSendAnotherScreen && sleepInterval > 2999) {
+                if (needToSendAnotherScreen && sleepInterval > 1999) {
                     Thread.sleep(sleepInterval / 2);
                     sendScreen(false);
                     Thread.sleep(sleepInterval / 2);
@@ -81,8 +81,11 @@ public class Main {
                 .findAny()
                 .ifPresent(entry -> {
                     try {
-                        sleepInterval = Long.parseLong(entry.getValue().get(0));
-                        System.out.printf("sleepInterval: %d\n", sleepInterval);
+                        long _sleepInterval = Long.parseLong(entry.getValue().get(0));
+                        if (_sleepInterval != sleepInterval) {
+                            sleepInterval = _sleepInterval;
+                            System.out.printf("sleepInterval: %d\n", sleepInterval);
+                        }
                     }
                     catch (Exception __) {
                         System.err.printf("[ERROR] received a strange header %s: %s\n",
@@ -144,32 +147,32 @@ public class Main {
                     else if (c == 'w') type(KeyEvent.VK_W);
                     else if (c == 'y') type(KeyEvent.VK_Y);
                     else if (c == 'z') type(KeyEvent.VK_Z);
-                    else if (c == 'A') shiftType(KeyEvent.VK_A);
-                    else if (c == 'B') shiftType(KeyEvent.VK_B);
-                    else if (c == 'C') shiftType(KeyEvent.VK_C);
-                    else if (c == 'D') shiftType(KeyEvent.VK_D);
-                    else if (c == 'E') shiftType(KeyEvent.VK_E);
-                    else if (c == 'F') shiftType(KeyEvent.VK_F);
-                    else if (c == 'G') shiftType(KeyEvent.VK_G);
-                    else if (c == 'H') shiftType(KeyEvent.VK_H);
-                    else if (c == 'I') shiftType(KeyEvent.VK_I);
-                    else if (c == 'J') shiftType(KeyEvent.VK_J);
-                    else if (c == 'K') shiftType(KeyEvent.VK_K);
-                    else if (c == 'L') shiftType(KeyEvent.VK_L);
-                    else if (c == 'M') shiftType(KeyEvent.VK_M);
-                    else if (c == 'N') shiftType(KeyEvent.VK_N);
-                    else if (c == 'O') shiftType(KeyEvent.VK_O);
-                    else if (c == 'P') shiftType(KeyEvent.VK_P);
-                    else if (c == 'Q') shiftType(KeyEvent.VK_Q);
-                    else if (c == 'R') shiftType(KeyEvent.VK_R);
-                    else if (c == 'S') shiftType(KeyEvent.VK_S);
-                    else if (c == 'T') shiftType(KeyEvent.VK_T);
-                    else if (c == 'U') shiftType(KeyEvent.VK_U);
-                    else if (c == 'V') shiftType(KeyEvent.VK_V);
-                    else if (c == 'X') shiftType(KeyEvent.VK_X);
-                    else if (c == 'W') shiftType(KeyEvent.VK_W);
-                    else if (c == 'Y') shiftType(KeyEvent.VK_Y);
-                    else if (c == 'Z') shiftType(KeyEvent.VK_Z);
+                    else if (c == 'A') capsLockType(KeyEvent.VK_A);
+                    else if (c == 'B') capsLockType(KeyEvent.VK_B);
+                    else if (c == 'C') capsLockType(KeyEvent.VK_C);
+                    else if (c == 'D') capsLockType(KeyEvent.VK_D);
+                    else if (c == 'E') capsLockType(KeyEvent.VK_E);
+                    else if (c == 'F') capsLockType(KeyEvent.VK_F);
+                    else if (c == 'G') capsLockType(KeyEvent.VK_G);
+                    else if (c == 'H') capsLockType(KeyEvent.VK_H);
+                    else if (c == 'I') capsLockType(KeyEvent.VK_I);
+                    else if (c == 'J') capsLockType(KeyEvent.VK_J);
+                    else if (c == 'K') capsLockType(KeyEvent.VK_K);
+                    else if (c == 'L') capsLockType(KeyEvent.VK_L);
+                    else if (c == 'M') capsLockType(KeyEvent.VK_M);
+                    else if (c == 'N') capsLockType(KeyEvent.VK_N);
+                    else if (c == 'O') capsLockType(KeyEvent.VK_O);
+                    else if (c == 'P') capsLockType(KeyEvent.VK_P);
+                    else if (c == 'Q') capsLockType(KeyEvent.VK_Q);
+                    else if (c == 'R') capsLockType(KeyEvent.VK_R);
+                    else if (c == 'S') capsLockType(KeyEvent.VK_S);
+                    else if (c == 'T') capsLockType(KeyEvent.VK_T);
+                    else if (c == 'U') capsLockType(KeyEvent.VK_U);
+                    else if (c == 'V') capsLockType(KeyEvent.VK_V);
+                    else if (c == 'X') capsLockType(KeyEvent.VK_X);
+                    else if (c == 'W') capsLockType(KeyEvent.VK_W);
+                    else if (c == 'Y') capsLockType(KeyEvent.VK_Y);
+                    else if (c == 'Z') capsLockType(KeyEvent.VK_Z);
                     else if (c == '0') type(KeyEvent.VK_0);
                     else if (c == '1') type(KeyEvent.VK_1);
                     else if (c == '2') type(KeyEvent.VK_2);
@@ -181,37 +184,37 @@ public class Main {
                     else if (c == '8') type(KeyEvent.VK_8);
                     else if (c == '9') type(KeyEvent.VK_9);
                     else if (c == '`') type(KeyEvent.VK_BACK_QUOTE);
-                    else if (c == '~') shiftType(192);
-                    else if (c == '!') type(KeyEvent.VK_EXCLAMATION_MARK);
-                    else if (c == '@') type(KeyEvent.VK_AT);
-                    else if (c == '#') type(KeyEvent.VK_NUMBER_SIGN);
-                    else if (c == '$') type(KeyEvent.VK_DOLLAR);
-                    else if (c == '%') shiftType(53);
-                    else if (c == '^') type(KeyEvent.VK_CIRCUMFLEX);
-                    else if (c == '&') type(KeyEvent.VK_AMPERSAND);
-                    else if (c == '*') type(KeyEvent.VK_ASTERISK);
-                    else if (c == '(') type(KeyEvent.VK_LEFT_PARENTHESIS);
-                    else if (c == ')') type(KeyEvent.VK_RIGHT_PARENTHESIS);
+                    else if (c == '~') shiftType(KeyEvent.VK_BACK_QUOTE);
+                    else if (c == '!') shiftType(KeyEvent.VK_1);
+                    else if (c == '@') shiftType(KeyEvent.VK_2);
+                    else if (c == '#') shiftType(KeyEvent.VK_3);
+                    else if (c == '$') shiftType(KeyEvent.VK_4);
+                    else if (c == '%') shiftType(KeyEvent.VK_5);
+                    else if (c == '^') shiftType(KeyEvent.VK_6);
+                    else if (c == '&') shiftType(KeyEvent.VK_7);
+                    else if (c == '*') shiftType(KeyEvent.VK_8);
+                    else if (c == '(') shiftType(KeyEvent.VK_9);
+                    else if (c == ')') shiftType(KeyEvent.VK_0);
                     else if (c == '-') type(KeyEvent.VK_MINUS);
-                    else if (c == '_') type(KeyEvent.VK_UNDERSCORE);
+                    else if (c == '_') shiftType(KeyEvent.VK_MINUS);
                     else if (c == '=') type(KeyEvent.VK_EQUALS);
-                    else if (c == '+') type(KeyEvent.VK_PLUS);
+                    else if (c == '+') shiftType(KeyEvent.VK_EQUALS);
                     else if (c == '[') type(KeyEvent.VK_OPEN_BRACKET);
-                    else if (c == '{') type(KeyEvent.VK_BRACELEFT);
+                    else if (c == '{') shiftType(KeyEvent.VK_OPEN_BRACKET);
                     else if (c == ']') type(KeyEvent.VK_CLOSE_BRACKET);
-                    else if (c == '}') type(KeyEvent.VK_BRACERIGHT);
+                    else if (c == '}') shiftType(KeyEvent.VK_CLOSE_BRACKET);
                     else if (c == '\\') type(KeyEvent.VK_BACK_SLASH);
-                    else if (c == '|') shiftType(220);
+                    else if (c == '|') shiftType(KeyEvent.VK_BACK_SLASH);
                     else if (c == ';') type(KeyEvent.VK_SEMICOLON);
-                    else if (c == ':') type(KeyEvent.VK_COLON);
+                    else if (c == ':') shiftType(KeyEvent.VK_SEMICOLON);
                     else if (c == '\'') type(KeyEvent.VK_QUOTE);
-                    else if (c == '"') type(KeyEvent.VK_QUOTEDBL);
+                    else if (c == '"') shiftType(KeyEvent.VK_QUOTE);
                     else if (c == ',') type(KeyEvent.VK_COMMA);
-                    else if (c == '<') type(KeyEvent.VK_LESS);
+                    else if (c == '<') shiftType(KeyEvent.VK_COMMA);
                     else if (c == '.') type(KeyEvent.VK_PERIOD);
-                    else if (c == '>') type(KeyEvent.VK_GREATER);
+                    else if (c == '>') shiftType(KeyEvent.VK_PERIOD);
                     else if (c == '/') type(KeyEvent.VK_SLASH);
-                    else if (c == '?') shiftType(191);
+                    else if (c == '?') shiftType(KeyEvent.VK_SLASH);
                     else if (c == ' ') type(KeyEvent.VK_SPACE);
                 }
                 if ("typeAndEnter".equals(action.action))
@@ -272,7 +275,7 @@ public class Main {
         catch (Throwable __) { /* who cares */ }
     }
 
-    private static void shiftType(int keycode) {
+    private static void capsLockType(int keycode) {
         try {
             robot.keyPress(KeyEvent.VK_CAPS_LOCK);
             robot.delay(82);
@@ -282,6 +285,18 @@ public class Main {
             robot.keyPress(KeyEvent.VK_CAPS_LOCK);
             robot.delay(82);
             robot.keyRelease(KeyEvent.VK_CAPS_LOCK);
+            robot.delay(82);
+        }
+        catch (Throwable __) { /* who cares */ }
+    }
+
+    private static void shiftType(int keycode) {
+        try {
+            robot.keyPress(KeyEvent.VK_SHIFT);
+            robot.delay(82);
+            type(keycode);
+            robot.delay(82);
+            robot.keyRelease(KeyEvent.VK_SHIFT);
             robot.delay(82);
         }
         catch (Throwable __) { /* who cares */ }
