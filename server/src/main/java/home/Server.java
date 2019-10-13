@@ -7,7 +7,7 @@ import spark.Spark;
 public class Server {
     public static final Gson gson = new Gson();
 
-    private static long sleepInterval = 60_000;
+    public static long sleepInterval = 60_000;
     private static byte[] bytes = new byte[0];
 
     public static void main(String[] args) {
@@ -34,7 +34,6 @@ public class Server {
         });
 
         Spark.get("/latest-screen", (request, response) -> {
-            response.header("sleep_interval", String.valueOf(sleepInterval));
             response.type("image/png");
             response.status(HttpStatus.OK_200);
             response.raw().getOutputStream().write(bytes);

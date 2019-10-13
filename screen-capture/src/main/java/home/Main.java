@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
-import java.util.List;
 
 public class Main {
     public static final Gson gson = new Gson();
@@ -65,7 +64,7 @@ public class Main {
 
     public static void sendScreen() throws Exception {
         long now = System.currentTimeMillis();
-        if (now - lastTimeScreenSent < 999)
+        if (now - lastTimeScreenSent < 699)
             return;
 
         BufferedImage screenFullImage = robot.createScreenCapture(rectangle);

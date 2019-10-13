@@ -37,6 +37,7 @@ public class ScreenCaptureWebSocket implements WebSocketListener {
         if (this.session != null && this.session.isOpen())
             this.session.close();
         this.session = session;
+        sendToScreenCapture("{\"action\":\"Sleep\",\"x\":" + Server.sleepInterval + "}");
     }
 
     @Override
@@ -48,11 +49,14 @@ public class ScreenCaptureWebSocket implements WebSocketListener {
         this.boWebSocket = boWebSocket;
     }
 
-    public void sendToScreenCapture(String message) {
+    // returns true if we can send to the other websocket
+    public boolean sendToScreenCapture(String message) {
         if (session != null && session.isOpen())
             try {
                 session.getRemote().sendString(message);
+                return true;
             }
             catch (Throwable __) { /* who cares */ }
+        return false;
     }
 }

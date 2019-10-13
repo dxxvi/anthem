@@ -28,8 +28,11 @@ public class BoWebSocket implements WebSocketListener {
     @Override
     public void onWebSocketText(String message) {
         Action action = Server.gson.fromJson(message, Action.class);
-        if (actionsForScreenCapture.contains(action.action))
+        if (actionsForScreenCapture.contains(action.action)) {
             screenCaptureWebSocket.sendToScreenCapture(message);
+            if ("Sleep".equals(action.action) && action.x > 0)
+                Server.sleepInterval = action.x;
+        }
         else if ("bo_sent".equals(action.action))
             meWebSocket.sendToMeHtml(message);
     }
