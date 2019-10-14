@@ -80,8 +80,10 @@ public class Main {
         ByteArrayOutputStream baos = new ByteArrayOutputStream(900_000);
         ImageIO.write(bi, "png", baos);
         byte[] _bytes = baos.toByteArray();
+/*
         if (bytes != null)
             f(bytes, _bytes);
+*/
         lastTimeScreenSent = now;
         ContentResponse response = httpClient.newRequest(String.format("http://%s:%s/screen-upload", host, port))
                 .method(HttpMethod.POST)
