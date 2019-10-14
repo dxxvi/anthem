@@ -10,11 +10,10 @@ import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
+import java.util.zip.Deflater;
 
 public class Main {
     public static final Gson gson = new Gson();
@@ -64,6 +63,7 @@ public class Main {
         System.exit(0);
     }
 
+    private static byte[] bytes;
     public static void sendScreen() throws Exception {
         long now = System.currentTimeMillis();
         if (now - lastTimeScreenSent < 699)
@@ -79,18 +79,46 @@ public class Main {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(900_000);
         ImageIO.write(bi, "png", baos);
-        byte[] bytes = baos.toByteArray();
-
+        byte[] _bytes = baos.toByteArray();
+        if (bytes != null)
+            f(bytes, _bytes);
         lastTimeScreenSent = now;
         ContentResponse response = httpClient.newRequest(String.format("http://%s:%s/screen-upload", host, port))
                 .method(HttpMethod.POST)
-                .content(new BytesContentProvider("image/png", bytes))
+                .content(new BytesContentProvider("image/png", _bytes))
                 .send();
-        System.out.println(bytes.length / 1000 + "K");
+        bytes = _bytes;
+        System.out.println(_bytes.length / 1000 + "K");
         if (response.getStatus() != 201) {
             System.out.println("http status code: " + response.getStatus());
             System.exit(0);
         }
         webSocket.justUploadImage();
+    }
+
+    private static void f(byte[] oldBytes, byte[] newBytes) {
+        int oldLength = oldBytes.length;
+        int newLength = newBytes.length;
+        byte[] bytes = new byte[newLength];
+
+        for (int i = 0; i < newLength; i++) {
+            if (i < oldLength) {
+                int a = (int)newBytes[i] - (int)oldBytes[i];
+                if (a < 0)
+                    bytes[i] = (byte)(a + 256);
+                else
+                    bytes[i] = (byte)a;
+            }
+            else
+                bytes[i] = newBytes[i];
+        }
+
+        byte[] compressedDiff = new byte[newLength * 2];
+        Deflater deflater = new Deflater();
+        deflater.setInput(newBytes);
+        deflater.finish();
+        int compressedDiffSize = deflater.deflate(compressedDiff);
+        deflater.end();
+        System.out.printf("New image size: %d compressed new image size %d\n", newLength, compressedDiffSize);
     }
 }
