@@ -1,4 +1,6 @@
-https://XXX.webex.com/XXX/j.php?MTID=m925dd58216b093f4076b0e4c8434f865
+https://XXX.webex.com/XXX/j.php?MTID=mfe87c077cd7d6e53439d18d3fd0479a7 9am PT
+
+t-mobile store: 149 Market Street, Newark, NJ, 07102 (Market & Broad)
 
 ```javascript
 import { Selector, ClientFunction } from 'testcafe';
