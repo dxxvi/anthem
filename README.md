@@ -2,8 +2,14 @@ https://anthem.webex.com/anthem/j.php?MTID=m61b980b5f848df47cca1a85020c83dab scr
 
 divergen backlog refinement 11.15am every Tue
 
-spring planning 11am every 2 weeks on Thu Dec 5, 19; Jan 2, 16
+spring planning 11am every 2 weeks on Thu Dec 5, 19; Jan 2, 16alias aria2c='aria2c --check-certificate=false'
 
-https://anthem.webex.com/anthem/j.php?MTID=m450aa6dd1743f8e3380b258c63527996
+```bash
+alias youtube-dl='youtube-dl --no-check-certificate'
 
-https://anthem.webex.com/anthem/j.php?MTID=m3bf0125299a77fa9d316552947d4de2a
+G="\[$(tput setaf 39)\]" && H="\[$(tput setaf 131)\]" && R="\[$(tput sgr0)\]" && export PS1="${G}\h${R}:${H}\w${R} $ "
+
+export EDITOR=vim
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin:$HOME/sbt/bin:/mnt/c/cygwin/home/DangVu/kafka_2.12-2.3.1/bin
+export JAVA_HOME=/usr/lib/jvm/default
+```
