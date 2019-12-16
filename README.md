@@ -13,3 +13,5 @@ export EDITOR=vim
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin:$HOME/sbt/bin:/mnt/c/cygwin/home/DangVu/kafka_2.12-2.3.1/bin
 export JAVA_HOME=/usr/lib/jvm/default
 ```
+
+https://anthem.webex.com/anthem/j.php?MTID=m27bff6eaf5a44c042267e88da2625eaf Mon Dec 16 only 9.15am
