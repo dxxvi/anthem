@@ -18,4 +18,19 @@ https://anthem.webex.com/anthem/j.php?MTID=m27bff6eaf5a44c042267e88da2625eaf Mon
 
 https://www.figma.com/file/S0G3uCvuT3m3eMBQlfUnm08z/Broker-On-The-Go-(Client)?node-id=382%3A0
 
-https://anthem.webex.com/anthem/j.php?MTID=m9081e55b6d3d4ccdf51710d31205c841
+```
+    GM_addStyle([
+        '.wy-nav-content p { font-size: 16px; color: #3a3a3a }',
+        '.third-column .wy-nav-content { padding-left: 28rem }',
+        '.wy-menu-vertical a { padding-top: 7px !important; padding-bottom: 3px !important; font-size: 15px }',
+        '.sticky-menu a { font-size: 15px; font-weight: 300; color: #444 }',
+        '#site-header { padding: 0; height: auto !important }',
+        'nav.navigation { padding-top: 1px; padding-bottom: 1px } nav.navigation > ul > li { padding-bottom: 0 } #site-header .brand_logo { top: 4px }'
+    ].join('\n'));
+
+    setTimeout(function() {
+        document.querySelectorAll('div.c-body > div.container').forEach(d => {
+            d.setAttribute('class', (' ' + d.className + ' ').replace(' container ', ' container-fluid ').trim());
+        });
+    }, 419);
+```
