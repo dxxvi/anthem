@@ -1,4 +1,4 @@
-https://anthem.webex.com/anthem/j.php?MTID=m61b980b5f848df47cca1a85020c83dab scrum 11am ET
+https://optumtech.webex.com/mw3300/mywebex/default.do?service=1&main_url=%2Fmc3300%2Fe.do%3Fsiteurl%3Doptumtech%26AT%3DMI%26EventID%3D957975882%26MTID%3Dmf04398e7888f0d689ddc9e549a34d8a5%26Host%3DQUhTSwAAAAQuRFZS1RMsit1bVkaoQw8St2LqvMT_DHWiAqGiiSCyuvbxohjupujYfGHkuKH24EcPA0VC8JdbDvr7OmohLjfK0%26FrameSet%3D2&siteurl=optumtech&nomenu=true
 
 divergen backlog refinement 11.15am every Tue
 
