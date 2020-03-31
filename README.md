@@ -1,4 +1,4 @@
-https://optumtech.webex.com/mw3300/mywebex/default.do?service=1&main_url=%2Fmc3300%2Fe.do%3Fsiteurl%3Doptumtech%26AT%3DMI%26EventID%3D957975882%26MTID%3Dmf04398e7888f0d689ddc9e549a34d8a5%26Host%3DQUhTSwAAAAQuRFZS1RMsit1bVkaoQw8St2LqvMT_DHWiAqGiiSCyuvbxohjupujYfGHkuKH24EcPA0VC8JdbDvr7OmohLjfK0%26FrameSet%3D2&siteurl=optumtech&nomenu=true
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_MGIxMTJjZGQtMmQ1Yy00NTc3LWJlY2EtZjg5ZTYyZWUwYjJk%40thread.v2/0?context=%7b%22Tid%22%3a%220d85160c-5899-44ca-acc8-db1501b993b6%22%2c%22Oid%22%3a%22af34eb95-d25b-44b3-b24c-40528df3b14f%22%7d
 
 divergen backlog refinement 11.15am every Tue
 
