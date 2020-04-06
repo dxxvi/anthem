@@ -1,4 +1,4 @@
-https://www.hackerrank.com/tests/3b5eltah9qd/login?b=eyJ1c2VybmFtZSI6InRfZGFuZ3Z1QGhvdG1haWwuY29tIiwicGFzc3dvcmQiOiJkMTgxMDQ4OCIsImhpZGUiOnRydWUsImFjY29tbW9kYXRpb25zIjp7ImFkZGl0aW9uYWxfdGltZV9wZXJjZW50IjowfX0=
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_MWEyMWZmMWMtN2FkZi00NzkwLTliMjMtZWRiMjQ5MWIzY2U5%40thread.v2/0?context=%7b%22Tid%22%3a%22622f8cde-07b5-4d16-ab2a-6dc0c3a66e35%22%2c%22Oid%22%3a%22a4ee6547-fb27-4a73-bd96-a98a9a0a2f18%22%7d
 
 alias aria2c='aria2c --check-certificate=false'
 
