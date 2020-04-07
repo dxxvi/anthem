@@ -1,4 +1,4 @@
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_MWEyMWZmMWMtN2FkZi00NzkwLTliMjMtZWRiMjQ5MWIzY2U5%40thread.v2/0?context=%7b%22Tid%22%3a%22622f8cde-07b5-4d16-ab2a-6dc0c3a66e35%22%2c%22Oid%22%3a%22a4ee6547-fb27-4a73-bd96-a98a9a0a2f18%22%7d
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDQwN2U5ODktZjUzZi00NzRkLWFkZjctZDRlOWU4MzJjMTY1%40thread.v2/0?context=%7b%22Tid%22%3a%2218a877e3-1cd4-4389-8df1-9d8013937102%22%2c%22Oid%22%3a%22c5eeb4c8-4222-4ab6-a868-808a7088db77%22%7d
 
 alias aria2c='aria2c --check-certificate=false'
 
