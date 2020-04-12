@@ -1,4 +1,4 @@
-mapt: akira.joshuah@iillii.org
+mapt, pluralsight: dillian.khadyn@iillii.org / 1Q...
 
 alias aria2c='aria2c --check-certificate=false'
 
