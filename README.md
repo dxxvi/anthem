@@ -1,6 +1,6 @@
 mapt: dillian.khadyn@iillii.org / 1Q...
 pluralsight: kamsiyochukwu.jaice@iillii.org / 1Q...
 
-https://teams.microsoft.com/l/meetup-join/19%3ameeting_OGQyMWMxOTAtNWRkYy00MmIzLWJlNjItNWZmZTc2OTBjN2Fm%40thread.v2/0?context=%7b%22Tid%22%3a%223f8a7bc4-e337-47a5-a0fc-0d512c0e05f1%22%2c%22Oid%22%3a%2207801861-194a-4a77-98d3-1b22f17f0d14%22%7d
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_Njk5YjIzYWItMzVkYi00ZDg3LThkODQtOTYyMTE4NjAxZWE2%40thread.v2/0?context=%7b%22Tid%22%3a%22135e8995-7d3b-4466-844b-a0d62ba5f495%22%2c%22Oid%22%3a%22a087bfbc-3256-4529-81cf-fdff219ebe3c%22%7d
 
 alias aria2c='aria2c --check-certificate=false'
