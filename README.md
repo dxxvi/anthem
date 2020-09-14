@@ -1,4 +1,6 @@
-https://sendgridemail.filtered.ai/ls/click?upn=uw2Nmd5YU-2B71cmK7mw6YlRRsIVNqNAOcFk0tewkanoUBk3gwCj0ev1i1QZA2F0Tn1puBv4gFB7ahv2-2F1k-2BSRfql0wiBPJmK-2FpIQGSYJTwINCVZsZOUbeiikN8BMUpa3vc-2BylInRqd4P8wr7Y87uZLw-3D-3DNztx_s-2Bx8v96FTgXXLUxSJin0V-2FqloIdKPOEfEsQB8c22-2Fz-2BYEFHABLgiJSL5K49w36y0-2FqlHviCoy2ZwTtcdvJBDR4cUL3aGE980d6nPLJZdETzjcqYJHCEGY8YO7KUBeW9-2Biy9lutARJtdJxEa2r-2F3mYmevuSfKf1Hi0Ycy7Hq2TMA8UiS12indfdyRAGfehMEg4VjCJdBG3UPnkR8Dgob4bKf0CRcWgmCK45G0Ov2mXzwzrGY2bB3d4QD7DrM-2BDmUX
+https://www.hackerrank.com/tests/pef1tnpoh2/login?b=eyJ1c2VybmFtZSI6InRfZGFuZ3Z1QGhvdG1haWwuY29tIiwicGFzc3dvcmQiOiJkN2M1MTcyNiIsImhpZGUiOnRydWUsImFjY29tbW9kYXRpb25zIjp7ImFkZGl0aW9uYWxfdGltZV9wZXJjZW50IjowfX0=
+
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_NjZiZjJkYjEtMmMyOS00NzliLTlmYjYtOThiZWUwZDg5ZjZj%40thread.v2/0?context=%7b%22Tid%22%3a%2224811e74-da82-41c0-b497-63ac8184347f%22%2c%22Oid%22%3a%22f0857e92-98a4-43ae-8a03-184f2dc095bb%22%7d
 
 https://prod2.beeline.com/capitalone/Assignments/TimeAndExpense/TimeAndExpense.aspx
 
