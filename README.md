@@ -1,4 +1,4 @@
-https://billcom.zoom.us/j/92635437008?pwd=NVVOMjVnQitqTU5URDFDOWE5c3Bjdz09 - hackerrank https://hr.gs/84f53c
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_YTk1NDAyMTYtYTdlMy00OWFlLWIwNDQtNWUzZmRiNDk3ZjQx%40thread.v2/0?context=%7b%22Tid%22%3a%2288d9e562-50eb-49de-b8ce-a7198a175d32%22%2c%22Oid%22%3a%22e6b058e1-8f1e-49a3-904f-93284c958d68%22%7d
 
 https://prod2.beeline.com/capitalone/Assignments/TimeAndExpense/TimeAndExpense.aspx
 
