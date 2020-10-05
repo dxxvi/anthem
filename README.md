@@ -1,4 +1,16 @@
-https://zoom.us/j/92450541583?pwd=TnVkSHpRc050VTE0bTB1R08zY2wxZz09
+As discussed, we have received a furlough exception from Capital One and you are approved to work during the dates indicated below.
+
+Please see below dates you are supposed to work
+
+(October 12, 2020,Columbus Day)
+
+(November 11, 2020, Veterans Day)
+
+(Thanksgiving Week, November 23, 24, 25, 26 & 27, 2020)
+
+(Christmas Week, December 21, 22, 23, 24, 25, 28, 29 & 30, 2020).
+
+(New Years, December 31, 2020 & January 1, 2021)
 
 https://prod2.beeline.com/capitalone/Assignments/TimeAndExpense/TimeAndExpense.aspx
 
